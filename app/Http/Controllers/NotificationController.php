@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\FireNotification;
 use App\Models\Notification;
 use App\Http\Requests\UpdateNotificationRequest;
 use Illuminate\Http\Request;
@@ -39,6 +40,8 @@ class NotificationController extends Controller implements HasMiddleware
         ]);
 
         $notification = $request->user()->notifications()->create($entries);
+
+        broadcast(new FireNotification($notification));
 
         return ['notification' => $notification];
     }
