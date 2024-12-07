@@ -17,17 +17,20 @@ const Home = () => {
     };
 
     useEffect(() => {
+        // Function to fetch notifications
         const getNotifications = async () => {
             const { data } = await axios.get('/api/notifications');
             setNotifications(data?.notifications);
         };
 
+        // Get notifications
         getNotifications();
 
         if (echo) {
-            echo.private(`notification.1`).listen('FireNotification', handleNotification);
+            // Listen for notifications
+            echo.private(`notification.${user?.id}`).listen('FireNotification', handleNotification);
         }
-    }, [echo]);
+    }, [echo, user?.id]);
 
     return (
         <div className="w-full h-screen">
